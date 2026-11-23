@@ -21,7 +21,7 @@ export type R2ExplorerConfig = {
 		  }
 		| false;
 	showHiddenFiles?: boolean;
-	basicAuth?: BasicAuth | BasicAuth[];
+	basicAuth?: BasicAuthType | BasicAuthType[];
 	buckets?: Record<string, BucketConfig>;
 };
 
@@ -36,13 +36,23 @@ export type ShareMetadata = {
 	createdAt: number;
 };
 
+export type SessionUser = {
+	username: string;
+	role: "admin" | "user";
+};
+
 export type AppEnv = {
 	ASSETS: Fetcher;
-	[key: string]: R2Bucket;
+	USERS_KV?: KVNamespace;
+	SESSION_SECRET?: string;
+	[key: string]: R2Bucket | KVNamespace | Fetcher | string | undefined;
 };
+
 export type AppVariables = {
 	config: R2ExplorerConfig;
 	authentication_type?: string;
 	authentication_username?: string;
+	sessionUser?: SessionUser;
 } & CloudflareAccessVariables;
+
 export type AppContext = Context<{ Bindings: AppEnv; Variables: AppVariables }>;
