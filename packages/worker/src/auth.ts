@@ -207,5 +207,5 @@ export async function listUsersFromKv(
 		});
 	}
 
-	return users;
+	return users; 
 }
