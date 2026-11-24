@@ -88,7 +88,12 @@ export function R2Explorer(config?: R2ExplorerConfig) {
 	}
 
 	// Autenticación por cookie de sesión usando USERS_KV + SESSION_SECRET
-	app.use("/api/*", sessionMiddleware);
+app.use("/api/*", async (c, next) => {
+  if (c.req.path === "/api/auth/setup" || c.req.path === "/api/auth/login") {
+    return next();
+  }
+  return sessionMiddleware(c, next);
+});
 
 	// Crear el primer usuario administrador solo cuando USERS_KV está vacío
 	app.post("/api/auth/setup", async (c) => {
